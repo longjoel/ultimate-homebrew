@@ -11,15 +11,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     libtool libtool-bin python3-dev bzip2 libgmp3-dev g++ libssl-dev clang \
     python-is-python3 python-dev-is-python3 cmake tar ninja-build
 
-
-
-
-# ENV PS2SDKSRC=/dep/ps2sdk
-# ENV PS2DEV=/usr/local/ps2dev
-# ENV PS2SDK=$PS2DEV/ps2sdk
-# ENV PATH=$PATH:$PS2DEV/bin:$PS2DEV/ee/bin:$PS2DEV/iop/bin:$PS2DEV/dvp/bin:$PS2SDK/bin
-# RUN mkdir -p $PS2DEV
-# install ps2 toolchain
 WORKDIR /dep/
 RUN wget https://ftp.gnu.org/gnu/binutils/binutils-2.42.tar.gz
 RUN wget https://ftp.gnu.org/gnu/gcc/gcc-13.2.0/gcc-13.2.0.tar.xz
