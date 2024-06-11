@@ -9,7 +9,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     pkg-config autoconf automake bison flex gcc libelf-dev make \
     texinfo libncurses5-dev patch python3 subversion wget zlib1g-dev \
     libtool libtool-bin python3-dev bzip2 libgmp3-dev g++ libssl-dev clang \
-    python-is-python3 python-dev-is-python3 cmake tar
+    python-is-python3 python-dev-is-python3 cmake tar ninja-build
 
 
 
@@ -26,16 +26,16 @@ RUN wget https://ftp.gnu.org/gnu/gcc/gcc-13.2.0/gcc-13.2.0.tar.xz
 RUN tar xvf binutils-2.42.tar.gz
 RUN tar xvf gcc-13.2.0.tar.xz
 RUN rm -f *.tar.xz
-RUN cd gcc-13.2.0
-RUN ./contrib/download_prerequisites
+WORKDIR /dep/gcc-13.2.0
+RUN sh ./contrib/download_prerequisites
 WORKDIR /dep/binutils-build
-RUN ../binutils-2.42/configure \
+RUN sh ../binutils-2.42/configure \
   --prefix=/usr/local/mipsel-none-elf --target=mipsel-none-elf \
   --disable-docs --disable-nls --disable-werror --with-float=soft
 RUN make -j 4
 RUN make install-strip
 WORKDIR /dep/gcc-build
-RUN ../gcc-13.2.0/configure \
+RUN sh ../gcc-13.2.0/configure \
   --prefix=/usr/local/mipsel-none-elf --target=mipsel-none-elf \
   --disable-docs --disable-nls --disable-werror --disable-libada \
   --disable-libssp --disable-libquadmath --disable-threads \
