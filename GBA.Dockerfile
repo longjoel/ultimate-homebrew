@@ -42,5 +42,6 @@ COPY vscode-gba/launch.json /app/.vscode/launch.json
 COPY vscode-gba/settings.json /app/.vscode/settings.json
 COPY vscode-gba/tasks.json /app/.vscode/tasks.json
 COPY vscode-gba/c_cpp_properties.json /app/.vscode/c_cpp_properties.json
+COPY compile_flags_gba.txt /app/compile_flags.txt
 
 CMD [ "/usr/bin/code-server","/app/" ]
