@@ -44,4 +44,6 @@ COPY vscode-gba/tasks.json /app/.vscode/tasks.json
 COPY vscode-gba/c_cpp_properties.json /app/.vscode/c_cpp_properties.json
 COPY compile_flags_gba.txt /app/compile_flags.txt
 
+
+RUN code-server --install-extension llvm-vs-code-extensions.vscode-clangd
 CMD [ "/usr/bin/code-server","/app/" ]
