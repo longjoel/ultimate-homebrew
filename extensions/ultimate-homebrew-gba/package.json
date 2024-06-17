@@ -15,7 +15,28 @@
     "commands": [{
       "command": "ultimate-homebrew-gba.helloWorld",
       "title": "Hello World"
-    }]
+    }],
+    "languages": [{
+      "id": "gba",
+      "extensions": [".gba"]
+    }],
+    "configuration": {
+      "fileAssociations": {
+        "*.gba": "gba"
+      }
+    },
+    "customEditors": [
+      {
+        "viewType": "gbaCustomEditor",
+        "displayName": "GBA Custom Editor",
+        "priority": "default",
+        "selector": [
+          {
+            "filenamePattern": "*.gba"
+          }
+        ]
+      }
+    ]
   },
   "scripts": {
     "lint": "eslint .",
