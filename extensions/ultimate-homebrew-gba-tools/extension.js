@@ -5,22 +5,26 @@ const vscode = require('vscode');
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 
-class GbaCustomEditorProvider {
+class GBAEditorProvider {
+	constructor(context) {
+		this._context = context;
+	
+	}
 
 	async openCustomDocument(uri, openContext, token) {
-		// This method is called when a document is opened in the custom editor.
-		// You can return a custom document here.
-		// For now, we'll just return a simple object.
-		return { uri, contents: '' };
-	  }
-	
-	async resolveCustomEditor(document, webviewPanel) {
-	  // Implement your custom editor here.
-	  // This is just a placeholder implementation.
-	  webviewPanel.webview.html = `<h1>Custom editor for ${document.uri.fsPath}</h1>`;
-	}
-  }
-  
+		return {uri}
+        // You can return a custom document here
+    }
+
+    async resolveCustomEditor(document, webviewPanel, token) {
+        // Setup initial content for the webview
+        webviewPanel.webview.options = {
+            enableScripts: true,
+        };
+        webviewPanel.webview.html = "Hello World!";
+    }
+
+}
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -29,25 +33,22 @@ function activate(context) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "ultimate-homebrew-gba" is now active!');
-
+	console.log('Congratulations, your extension "ultimate-homebrew-gba-tools" is now active!');
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with  registerCommand
 	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('ultimate-homebrew-gba.helloWorld', function () {
+	const disposable = vscode.commands.registerCommand('ultimate-homebrew-gba-tools.helloWorld', function () {
 		// The code you place here will be executed every time your command is executed
 
 		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from ultimate-homebrew-gba!');
+		vscode.window.showInformationMessage('Hello World from ultimate-homebrew-gba-tools!');
 	});
 
 	context.subscriptions.push(disposable);
 
+	vscode.window.registerCustomEditorProvider('ultimate-homebrew-gba-tools.editor', new GBAEditorProvider(context));
 	
-	const provider = new GbaCustomEditorProvider();
-	context.subscriptions.push(vscode.window.registerCustomEditorProvider('gbaCustomEditor', provider));
-  
 }
 
 // This method is called when your extension is deactivated

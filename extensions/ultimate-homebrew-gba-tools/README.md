@@ -1,6 +1,6 @@
-# ultimate-homebrew-gba README
+# ultimate-homebrew-gba-tools README
 
-This is the README for your extension "ultimate-homebrew-gba". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "ultimate-homebrew-gba-tools". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 

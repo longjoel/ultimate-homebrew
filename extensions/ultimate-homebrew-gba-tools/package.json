@@ -1,7 +1,7 @@
 {
-  "name": "ultimate-homebrew-gba",
-  "displayName": "ultimate-homebrew-gba",
-  "description": "ultimate homebrew gba tools",
+  "name": "ultimate-homebrew-gba-tools",
+  "displayName": "ultimate-homebrew-gba-tools",
+  "description": "",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.90.0"
@@ -13,23 +13,13 @@
   "main": "./extension.js",
   "contributes": {
     "commands": [{
-      "command": "ultimate-homebrew-gba.helloWorld",
+      "command": "ultimate-homebrew-gba-tools.helloWorld",
       "title": "Hello World"
     }],
-    "languages": [{
-      "id": "gba",
-      "extensions": [".gba"]
-    }],
-    "configuration": {
-      "fileAssociations": {
-        "*.gba": "gba"
-      }
-    },
     "customEditors": [
       {
-        "viewType": "gbaCustomEditor",
-        "displayName": "GBA Custom Editor",
-        "priority": "default",
+        "viewType": "ultimate-homebrew-gba-tools.editor",
+        "displayName": "Ultimate Homebrew: GBA Tools",
         "selector": [
           {
             "filenamePattern": "*.gba"
