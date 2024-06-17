@@ -14,28 +14,44 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 WORKDIR /dep/
 RUN wget https://ftp.gnu.org/gnu/binutils/binutils-2.42.tar.gz
 RUN wget https://ftp.gnu.org/gnu/gcc/gcc-13.2.0/gcc-13.2.0.tar.xz
+RUN wget ftp://sourceware.org/pub/newlib/newlib-4.1.0.tar.gz
+
 RUN tar xvf binutils-2.42.tar.gz
 RUN tar xvf gcc-13.2.0.tar.xz
+RUN tar xvf newlib-4.1.0.tar.gz
+
 RUN rm -f *.tar.xz
 WORKDIR /dep/gcc-13.2.0
 RUN sh ./contrib/download_prerequisites
+
 WORKDIR /dep/binutils-build
 RUN sh ../binutils-2.42/configure \
   --prefix=/usr/local/mipsel-none-elf --target=mipsel-none-elf \
   --disable-docs --disable-nls --disable-werror --with-float=soft
 RUN make -j 4
 RUN make install-strip
+
 WORKDIR /dep/gcc-build
 RUN sh ../gcc-13.2.0/configure \
   --prefix=/usr/local/mipsel-none-elf --target=mipsel-none-elf \
   --disable-docs --disable-nls --disable-werror --disable-libada \
   --disable-libssp --disable-libquadmath --disable-threads \
-  --disable-libgomp --disable-libstdcxx-pch \
+  --disable-libgomp --disable-libstdcxx-pch --disable-hosted-libstdcxx \
   --enable-languages=c,c++ --without-isl --without-headers \
-  --with-float=soft --with-gnu-as --with-gnu-ld --with-newlib
+  --with-float=soft --with-gnu-as --with-gnu-ld
+
 
 RUN make -j4
 RUN make install-strip
+
+WORKDIR /dep/newlib-build
+
+RUN alias mipsel-none-elf-cc=`mipsel-none-elf-gcc`
+
+RUN ../newlib-4.1.0/configure --target=mipsel-none-elf --prefix=/usr/local/mipsel-none-elf
+RUN make -j4
+RUN make install-strip
+
 
 ENV PATH=$PATH:/usr/local/mipsel-none-elf/bin
 
@@ -47,7 +63,6 @@ RUN cmake --preset default .
 RUN cmake --build ./build
 RUN cmake --install ./build
 
-RUN rm -rf /dep/
 
 RUN curl -sL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh
 RUN bash /tmp/nodesource_setup.sh
