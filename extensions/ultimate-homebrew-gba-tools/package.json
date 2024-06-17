@@ -12,10 +12,12 @@
   "activationEvents": [],
   "main": "./extension.js",
   "contributes": {
-    "commands": [{
-      "command": "ultimate-homebrew-gba-tools.helloWorld",
-      "title": "Hello World"
-    }],
+    "commands": [
+      {
+        "command": "ultimate-homebrew-gba-tools.helloWorld",
+        "title": "Hello World"
+      }
+    ],
     "customEditors": [
       {
         "viewType": "ultimate-homebrew-gba-tools.editor",
@@ -34,12 +36,15 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.90.0",
     "@types/mocha": "^10.0.6",
     "@types/node": "20.x",
-    "eslint": "^8.57.0",
-    "typescript": "^5.4.5",
+    "@types/vscode": "^1.90.0",
     "@vscode/test-cli": "^0.0.9",
-    "@vscode/test-electron": "^2.4.0"
+    "@vscode/test-electron": "^2.4.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "gbajs": "^1.1.2"
   }
 }

@@ -1,6 +1,8 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
+var fs = require('fs');
+var GameBoyAdvance = require('gbajs');
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -8,21 +10,52 @@ const vscode = require('vscode');
 class GBAEditorProvider {
 	constructor(context) {
 		this._context = context;
-	
+
 	}
 
 	async openCustomDocument(uri, openContext, token) {
-		return {uri}
-        // You can return a custom document here
-    }
+		return { uri }
+		// You can return a custom document here
+	}
 
-    async resolveCustomEditor(document, webviewPanel, token) {
-        // Setup initial content for the webview
-        webviewPanel.webview.options = {
-            enableScripts: true,
-        };
-        webviewPanel.webview.html = "Hello World!";
-    }
+	async resolveCustomEditor(document, webviewPanel, token) {
+		// Setup initial content for the webview
+		webviewPanel.webview.options = {
+			enableScripts: true,
+		};
+		webviewPanel.webview.html = `<html><canvas id="screen" width="240" height="160" background-color="red"></canvas>Hello<p>${document.uri}</p></html>`
+
+
+		var gba = new GameBoyAdvance();
+
+		var canvas = webviewPanel.webview.getElementById('screen');
+		gba.setCanvas(canvas);
+
+		gba.logLevel = gba.LOG_ERROR;
+
+		let biosURI = webviewPanel.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'node_modules', 'gbajs', 'resources', 'bios.bin'));
+		const data = fs.readFileSync(biosURI.fsPath, { responseType: 'blob' });
+		const buffer = Buffer.from(data);
+		gba.setBios(buffer);
+
+		gba.setCanvasMemory();
+
+		gba.runStable();
+
+		// gba.loadRomFromFile(document.uri, function (err, result) {
+		// 	if (err) {
+		// 		console.error('loadRom failed:', err);
+		// 		process.exit(1);
+		// 	}
+		// 	gba.runStable();
+		// });
+
+		// var idx = 0;
+		// setInterval(function () {
+		// 	var keypad = gba.keypad;
+		// 	keypad.press(keypad.A);
+
+	}
 
 }
 
@@ -48,11 +81,11 @@ function activate(context) {
 	context.subscriptions.push(disposable);
 
 	vscode.window.registerCustomEditorProvider('ultimate-homebrew-gba-tools.editor', new GBAEditorProvider(context));
-	
+
 }
 
 // This method is called when your extension is deactivated
-function deactivate() {}
+function deactivate() { }
 
 module.exports = {
 	activate,
