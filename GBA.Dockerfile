@@ -38,11 +38,10 @@ RUN bash -c 'echo auth: none' >> /root/.config/code-server/config.yaml
 WORKDIR /app/
 
 RUN mkdir -p /app/.vscode
-COPY vscode-gba/launch.json /app/.vscode/launch.json
-COPY vscode-gba/settings.json /app/.vscode/settings.json
-COPY vscode-gba/tasks.json /app/.vscode/tasks.json
-COPY vscode-gba/c_cpp_properties.json /app/.vscode/c_cpp_properties.json
-COPY compile_flags_gba.txt /app/compile_flags.txt
+COPY gba-files/launch.json /app/.vscode/launch.json
+COPY gba-files/settings.json /app/.vscode/settings.json
+COPY gba-files/tasks.json /app/.vscode/tasks.json
+COPY gba-files/compile_flags.txt /app/compile_flags.txt
 
 
 RUN code-server --install-extension llvm-vs-code-extensions.vscode-clangd

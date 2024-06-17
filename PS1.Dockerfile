@@ -30,9 +30,9 @@ RUN sh ../gcc-13.2.0/configure \
   --prefix=/usr/local/mipsel-none-elf --target=mipsel-none-elf \
   --disable-docs --disable-nls --disable-werror --disable-libada \
   --disable-libssp --disable-libquadmath --disable-threads \
-  --disable-libgomp --disable-libstdcxx-pch --disable-hosted-libstdcxx \
+  --disable-libgomp --disable-libstdcxx-pch \
   --enable-languages=c,c++ --without-isl --without-headers \
-  --with-float=soft --with-gnu-as --with-gnu-ld
+  --with-float=soft --with-gnu-as --with-gnu-ld --with-newlib
 
 RUN make -j4
 RUN make install-strip
@@ -47,7 +47,9 @@ RUN cmake --preset default .
 RUN cmake --build ./build
 RUN cmake --install ./build
 
-RUN curl -sL https://deb.nodesource.com/setup_18.x -o /tmp/nodesource_setup.sh
+RUN rm -rf /dep/
+
+RUN curl -sL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh
 RUN bash /tmp/nodesource_setup.sh
 RUN apt-get install -y nodejs
 RUN npm install --global --unsafe-perm code-server
@@ -58,7 +60,14 @@ RUN mkdir -p /root/.config/code-server
 RUN bash -c 'echo bind-addr: 0.0.0.0:8080' > /root/.config/code-server/config.yaml
 RUN bash -c 'echo auth: none' >> /root/.config/code-server/config.yaml
 
+WORKDIR /app/
 
-WORKDIR /app
+RUN mkdir -p /app/.vscode
+COPY ps1-files/launch.json /app/.vscode/launch.json
+COPY ps1-files/settings.json /app/.vscode/settings.json
+COPY ps1-files/tasks.json /app/.vscode/tasks.json
+COPY ps1-files/compile_flags.txt /app/compile_flags.txt
 
+
+RUN code-server --install-extension llvm-vs-code-extensions.vscode-clangd
 CMD [ "/usr/bin/code-server","/app/" ]
