@@ -71,7 +71,7 @@ RUN apt-get install -y nodejs
 RUN npm install --global --unsafe-perm code-server
 
 ENV PSN00BSDK_LIBS=/usr/local/lib/libpsn00b
-ENV CMAKE_TOOLCHAIN_FILE=/usr/local/include/psn00b/cmake/sdk.cmake
+ENV CMAKE_TOOLCHAIN_FILE=/usr/local/lib/libpsn00b/cmake/sdk.cmake
 
 EXPOSE 8080
 
