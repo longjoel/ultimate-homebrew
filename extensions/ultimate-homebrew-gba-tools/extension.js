@@ -2,12 +2,13 @@
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
 var fs = require('fs');
-var GameBoyAdvance = require('gbajs');
-
+var ps = require('child_process');
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 
 class GBAEditorProvider {
+
+	 proc=null;
 	constructor(context) {
 		this._context = context;
 
@@ -23,38 +24,14 @@ class GBAEditorProvider {
 		webviewPanel.webview.options = {
 			enableScripts: true,
 		};
-		webviewPanel.webview.html = `<html><canvas id="screen" width="240" height="160" background-color="red"></canvas>Hello<p>${document.uri}</p></html>`
 
+		if(this.proc!=null){
+			this.proc.kill();
+		}
 
-		var gba = new GameBoyAdvance();
+		this.proc = ps.spawn('npx',['-y','serve', '-C','-p','9876'],{detached:true,shell:true});
 
-		var canvas = webviewPanel.webview.getElementById('screen');
-		gba.setCanvas(canvas);
-
-		gba.logLevel = gba.LOG_ERROR;
-
-		let biosURI = webviewPanel.webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, 'node_modules', 'gbajs', 'resources', 'bios.bin'));
-		const data = fs.readFileSync(biosURI.fsPath, { responseType: 'blob' });
-		const buffer = Buffer.from(data);
-		gba.setBios(buffer);
-
-		gba.setCanvasMemory();
-
-		gba.runStable();
-
-		// gba.loadRomFromFile(document.uri, function (err, result) {
-		// 	if (err) {
-		// 		console.error('loadRom failed:', err);
-		// 		process.exit(1);
-		// 	}
-		// 	gba.runStable();
-		// });
-
-		// var idx = 0;
-		// setInterval(function () {
-		// 	var keypad = gba.keypad;
-		// 	keypad.press(keypad.A);
-
+		webviewPanel.webview.html = `<html><iframe src="http://localhost:9876" style="width:100%;height:100%;border:0px;"></iframe></html>`
 	}
 
 }

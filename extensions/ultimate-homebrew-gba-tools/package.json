@@ -45,6 +45,6 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "gbajs": "^1.1.2"
+    "serve": "^12.0.0"
   }
 }
