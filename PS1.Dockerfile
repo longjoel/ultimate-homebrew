@@ -44,13 +44,6 @@ RUN sh ../gcc-13.2.0/configure \
 RUN make -j4
 RUN make install-strip
 
-WORKDIR /dep/newlib-build
-
-RUN alias mipsel-none-elf-cc=`mipsel-none-elf-gcc`
-
-RUN ../newlib-4.1.0/configure --target=mipsel-none-elf --prefix=/usr/local/mipsel-none-elf
-RUN make -j4
-RUN make install-strip
 
 
 ENV PATH=$PATH:/usr/local/mipsel-none-elf/bin
@@ -64,10 +57,21 @@ RUN cmake --build ./build
 RUN cmake --install ./build
 
 
+WORKDIR /dep/newlib-build
+
+RUN ln -s /usr/local/mipsel-none-elf/bin/mipsel-none-elf-gcc /usr/local/mipsel-none-elf/bin/mipsel-none-elf-cc
+RUN ../newlib-4.1.0/configure --target=mipsel-none-elf --prefix=/usr/local/mipsel-none-elf
+RUN make -j4
+RUN make install
+
+
 RUN curl -sL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh
 RUN bash /tmp/nodesource_setup.sh
 RUN apt-get install -y nodejs
 RUN npm install --global --unsafe-perm code-server
+
+ENV PSN00BSDK_LIBS=/usr/local/lib/libpsn00b
+ENV CMAKE_TOOLCHAIN_FILE=/usr/local/include/psn00b/cmake/sdk.cmake
 
 EXPOSE 8080
 

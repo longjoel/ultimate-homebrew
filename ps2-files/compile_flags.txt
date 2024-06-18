@@ -1,0 +1,4 @@
+-nostdinc
+-I/opt/devkitpro/devkitARM/lib/gcc/arm-none-eabi/14.1.0/include/
+-I/opt/devkitpro/devkitARM/arm-none-eabi/include
+-I/opt/devkitpro/libgba/include/
