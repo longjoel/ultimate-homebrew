@@ -43,6 +43,6 @@ COPY gba-files/settings.json /app/.vscode/settings.json
 COPY gba-files/tasks.json /app/.vscode/tasks.json
 COPY gba-files/compile_flags.txt /app/compile_flags.txt
 
-
+RUN code-server --install-extension cnshenj.vscode-task-manager
 RUN code-server --install-extension llvm-vs-code-extensions.vscode-clangd
 CMD [ "/usr/bin/code-server","/app/" ]

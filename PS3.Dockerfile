@@ -42,19 +42,26 @@ WORKDIR /dep/ps3libraries
 RUN bash /dep/ps3libraries/libraries.sh
 
 
-
-RUN curl -sL https://deb.nodesource.com/setup_18.x -o /tmp/nodesource_setup.sh
+RUN curl -sL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh
 RUN bash /tmp/nodesource_setup.sh
 RUN apt-get install -y nodejs
 RUN npm install --global --unsafe-perm code-server
-
-EXPOSE 8080
 
 RUN mkdir -p /root/.config/code-server
 RUN bash -c 'echo bind-addr: 0.0.0.0:8080' > /root/.config/code-server/config.yaml
 RUN bash -c 'echo auth: none' >> /root/.config/code-server/config.yaml
 
 
-WORKDIR /app
+EXPOSE 8080
 
+WORKDIR /app/
+
+RUN mkdir -p /app/.vscode
+COPY gba-files/launch.json /app/.vscode/launch.json
+COPY gba-files/settings.json /app/.vscode/settings.json
+COPY gba-files/tasks.json /app/.vscode/tasks.json
+COPY gba-files/compile_flags.txt /app/compile_flags.txt
+
+RUN code-server --install-extension cnshenj.vscode-task-manager
+RUN code-server --install-extension llvm-vs-code-extensions.vscode-clangd
 CMD [ "/usr/bin/code-server","/app/" ]

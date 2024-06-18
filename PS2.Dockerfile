@@ -49,7 +49,7 @@ COPY ps2-files/settings.json /app/.vscode/settings.json
 COPY ps2-files/tasks.json /app/.vscode/tasks.json
 COPY ps2-files/compile_flags.txt /app/compile_flags.txt
 
-
+RUN code-server --install-extension cnshenj.vscode-task-manager
 RUN code-server --install-extension llvm-vs-code-extensions.vscode-clangd
 
 WORKDIR /app
