@@ -41,6 +41,10 @@ RUN git clone https://github.com/ps3dev/ps3libraries.git
 WORKDIR /dep/ps3libraries
 RUN bash /dep/ps3libraries/libraries.sh
 
+WORKDIR /dep
+RUN wget http://developer.download.nvidia.com/cg/Cg_3.1/Cg-3.1_April2012_x86_64.deb
+RUN dpkg -i Cg-3.1_April2012_x86_64.deb
+
 
 RUN curl -sL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh
 RUN bash /tmp/nodesource_setup.sh
@@ -57,11 +61,11 @@ EXPOSE 8080
 WORKDIR /app/
 
 RUN mkdir -p /app/.vscode
-COPY gba-files/launch.json /app/.vscode/launch.json
-COPY gba-files/settings.json /app/.vscode/settings.json
-COPY gba-files/tasks.json /app/.vscode/tasks.json
-COPY gba-files/compile_flags.txt /app/compile_flags.txt
+COPY ps3-files/launch.json /app/.vscode/launch.json
+COPY ps3-files/settings.json /app/.vscode/settings.json
+COPY ps3-files/tasks.json /app/.vscode/tasks.json
+COPY ps3-files/compile_flags.txt /app/compile_flags.txt
 
 RUN code-server --install-extension cnshenj.vscode-task-manager
 RUN code-server --install-extension llvm-vs-code-extensions.vscode-clangd
-CMD [ "/usr/bin/code-server","/app/" ]
+CMD [ "/usr/bin/code-server","--disable-workspace-trust","/app/" ]

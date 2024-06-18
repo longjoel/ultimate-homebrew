@@ -1,6 +1,7 @@
 -nostdinc
--I/usr/local/ps2dev/ps2sdk/common/include/
--I/usr/local/ps2dev/ps2sdk/ee/include/
--I/usr/local/ps2dev/ee/lib/gcc/mips64r5900el-ps2-elf/14.1.0/include/
--I/usr/local/ps2dev/ee/mips64r5900el-ps2-elf/include/
--D_EE
+-I/usr/local/ps3dev/portlibs/ppu/include
+-I/usr/local/ps3dev/ppu/include
+-I/usr/local/ps3dev/spu/include
+-I/usr/local/ps3dev/spu/spu/include
+-I/usr/local/ps3dev/ppu/lib/gcc/powerpc64-ps3-elf/7.2.0/include
+-I/usr/lib/llvm-14/lib/clang/14.0.0/include

@@ -2,11 +2,11 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build",
+            "label": "Copy template",
             "type": "shell",
-            "command": "make",
+            "command": "cp -r /dep/PSL1GHT/templates/trivial/* /app/src/",
             "group": {
-                "kind": "build",
+                "kind": "Init",
                 "isDefault": true
             },
             "presentation": {
@@ -15,29 +15,16 @@
             }
         },
         {
-            "label": "Test",
+            "label": "Build",
             "type": "shell",
-            "command": "make test",
+            "command": "cd /app/src/ && make",
             "group": {
-                "kind": "test",
+                "kind": "build",
                 "isDefault": true
             },
             "presentation": {
                 "reveal": "always",
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Clean",
-            "type": "shell",
-            "command": "make clean",
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            },
-            "presentation": {
-                "reveal": "always",
-                "panel": "dedicated"
+                "panel": "new"
             }
         }
     ]
