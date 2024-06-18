@@ -54,4 +54,4 @@ RUN code-server --install-extension llvm-vs-code-extensions.vscode-clangd
 
 WORKDIR /app
 
-CMD [ "/usr/bin/code-server","/app/" ]
+CMD [ "/usr/bin/code-server","--disable-workspace-trust","/app/" ]

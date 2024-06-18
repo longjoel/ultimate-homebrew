@@ -89,4 +89,4 @@ COPY ps1-files/compile_flags.txt /app/compile_flags.txt
 
 RUN code-server --install-extension cnshenj.vscode-task-manager
 RUN code-server --install-extension llvm-vs-code-extensions.vscode-clangd
-CMD [ "/usr/bin/code-server","/app/" ]
+CMD [ "/usr/bin/code-server","--disable-workspace-trust","/app/" ]

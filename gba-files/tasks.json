@@ -2,11 +2,11 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build",
+            "label": "Generate Template",
             "type": "shell",
-            "command": "make",
+            "command": "cp -R /opt/devkitpro/examples/gba/template/* /app/src",
             "group": {
-                "kind": "build",
+                "kind": "Setup",
                 "isDefault": true
             },
             "presentation": {
@@ -15,9 +15,9 @@
             }
         },
         {
-            "label": "Test",
+            "label": "Make",
             "type": "shell",
-            "command": "make test",
+            "command": "cd /app/src/ && make",
             "group": {
                 "kind": "test",
                 "isDefault": true
@@ -30,7 +30,7 @@
         {
             "label": "Clean",
             "type": "shell",
-            "command": "make clean",
+            "command": "cd /app/src/ && make clean",
             "group": {
                 "kind": "build",
                 "isDefault": false
