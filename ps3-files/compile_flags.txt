@@ -1,0 +1,7 @@
+-nostdinc
+-I/usr/local/ps3dev/portlibs/ppu/include
+-I/usr/local/ps3dev/ppu/include
+-I/usr/local/ps3dev/spu/include
+-I/usr/local/ps3dev/spu/spu/include
+-I/usr/local/ps3dev/ppu/lib/gcc/powerpc64-ps3-elf/7.2.0/include
+-I/usr/lib/llvm-14/lib/clang/14.0.0/include

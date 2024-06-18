@@ -1,0 +1,31 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Copy template",
+            "type": "shell",
+            "command": "cp -r /dep/PSL1GHT/templates/trivial/* /app/src/",
+            "group": {
+                "kind": "Init",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "cd /app/src/ && make",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        }
+    ]
+}

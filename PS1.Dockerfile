@@ -14,17 +14,23 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 WORKDIR /dep/
 RUN wget https://ftp.gnu.org/gnu/binutils/binutils-2.42.tar.gz
 RUN wget https://ftp.gnu.org/gnu/gcc/gcc-13.2.0/gcc-13.2.0.tar.xz
+RUN wget ftp://sourceware.org/pub/newlib/newlib-4.1.0.tar.gz
+
 RUN tar xvf binutils-2.42.tar.gz
 RUN tar xvf gcc-13.2.0.tar.xz
+RUN tar xvf newlib-4.1.0.tar.gz
+
 RUN rm -f *.tar.xz
 WORKDIR /dep/gcc-13.2.0
 RUN sh ./contrib/download_prerequisites
+
 WORKDIR /dep/binutils-build
 RUN sh ../binutils-2.42/configure \
   --prefix=/usr/local/mipsel-none-elf --target=mipsel-none-elf \
   --disable-docs --disable-nls --disable-werror --with-float=soft
 RUN make -j 4
 RUN make install-strip
+
 WORKDIR /dep/gcc-build
 RUN sh ../gcc-13.2.0/configure \
   --prefix=/usr/local/mipsel-none-elf --target=mipsel-none-elf \
@@ -34,8 +40,11 @@ RUN sh ../gcc-13.2.0/configure \
   --enable-languages=c,c++ --without-isl --without-headers \
   --with-float=soft --with-gnu-as --with-gnu-ld
 
+
 RUN make -j4
 RUN make install-strip
+
+
 
 ENV PATH=$PATH:/usr/local/mipsel-none-elf/bin
 
@@ -47,10 +56,22 @@ RUN cmake --preset default .
 RUN cmake --build ./build
 RUN cmake --install ./build
 
-RUN curl -sL https://deb.nodesource.com/setup_18.x -o /tmp/nodesource_setup.sh
+
+WORKDIR /dep/newlib-build
+
+RUN ln -s /usr/local/mipsel-none-elf/bin/mipsel-none-elf-gcc /usr/local/mipsel-none-elf/bin/mipsel-none-elf-cc
+RUN ../newlib-4.1.0/configure --target=mipsel-none-elf --prefix=/usr/local/mipsel-none-elf
+RUN make -j4
+RUN make install
+
+
+RUN curl -sL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh
 RUN bash /tmp/nodesource_setup.sh
 RUN apt-get install -y nodejs
 RUN npm install --global --unsafe-perm code-server
+
+ENV PSN00BSDK_LIBS=/usr/local/lib/libpsn00b
+ENV CMAKE_TOOLCHAIN_FILE=/usr/local/lib/libpsn00b/cmake/sdk.cmake
 
 EXPOSE 8080
 
@@ -58,7 +79,14 @@ RUN mkdir -p /root/.config/code-server
 RUN bash -c 'echo bind-addr: 0.0.0.0:8080' > /root/.config/code-server/config.yaml
 RUN bash -c 'echo auth: none' >> /root/.config/code-server/config.yaml
 
+WORKDIR /app/
 
-WORKDIR /app
+RUN mkdir -p /app/.vscode
+COPY ps1-files/launch.json /app/.vscode/launch.json
+COPY ps1-files/settings.json /app/.vscode/settings.json
+COPY ps1-files/tasks.json /app/.vscode/tasks.json
+COPY ps1-files/compile_flags.txt /app/compile_flags.txt
 
+RUN code-server --install-extension cnshenj.vscode-task-manager
+RUN code-server --install-extension llvm-vs-code-extensions.vscode-clangd
 CMD [ "/usr/bin/code-server","/app/" ]
