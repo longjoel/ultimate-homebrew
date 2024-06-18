@@ -1,4 +1,6 @@
 -nostdinc
--I/opt/devkitpro/devkitARM/lib/gcc/arm-none-eabi/14.1.0/include/
--I/opt/devkitpro/devkitARM/arm-none-eabi/include
--I/opt/devkitpro/libgba/include/
+-I/usr/local/ps2dev/ps2sdk/common/include/
+-I/usr/local/ps2dev/ps2sdk/ee/include/
+-I/usr/local/ps2dev/ee/lib/gcc/mips64r5900el-ps2-elf/14.1.0/include/
+-I/usr/local/ps2dev/ee/mips64r5900el-ps2-elf/include/
+-D_EE

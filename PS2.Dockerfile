@@ -29,7 +29,7 @@ RUN bash /dep/ps2sdk/download_dependencies.sh
 RUN  make && make install
 
 
-RUN curl -sL https://deb.nodesource.com/setup_18.x -o /tmp/nodesource_setup.sh
+RUN curl -sL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh
 RUN bash /tmp/nodesource_setup.sh
 RUN apt-get install -y nodejs
 RUN npm install --global --unsafe-perm code-server
@@ -40,6 +40,17 @@ RUN mkdir -p /root/.config/code-server
 RUN bash -c 'echo bind-addr: 0.0.0.0:8080' > /root/.config/code-server/config.yaml
 RUN bash -c 'echo auth: none' >> /root/.config/code-server/config.yaml
 
+
+WORKDIR /app/
+
+RUN mkdir -p /app/.vscode
+COPY ps2-files/launch.json /app/.vscode/launch.json
+COPY ps2-files/settings.json /app/.vscode/settings.json
+COPY ps2-files/tasks.json /app/.vscode/tasks.json
+COPY ps2-files/compile_flags.txt /app/compile_flags.txt
+
+
+RUN code-server --install-extension llvm-vs-code-extensions.vscode-clangd
 
 WORKDIR /app
 
