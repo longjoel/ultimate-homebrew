@@ -2,11 +2,11 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build",
+            "label": "Copy Template",
             "type": "shell",
-            "command": "make",
+            "command": "cp -r /usr/local/share/psn00bsdk/examples/beginner/hellocpp/* /app/src && cmake .",
             "group": {
-                "kind": "build",
+                "kind": "setup",
                 "isDefault": true
             },
             "presentation": {
@@ -15,11 +15,11 @@
             }
         },
         {
-            "label": "Test",
+            "label": "Build",
             "type": "shell",
-            "command": "make test",
+            "command": "make",
             "group": {
-                "kind": "test",
+                "kind": "build",
                 "isDefault": true
             },
             "presentation": {
