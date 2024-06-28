@@ -1,0 +1,2 @@
+-nostdinc
+-I/opt/gbdk/include

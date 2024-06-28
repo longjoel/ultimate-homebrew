@@ -1,28 +1,35 @@
 FROM ubuntu:22.04
 
+VOLUME [ "/app/src" ]
+EXPOSE 8080
+
+# INSTALL DEPENDENCIES
+
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     python3 \
     python3-pip \
     git \
     build-essential \
-    curl \
+    curl wget \
     pkg-config autoconf automake bison flex gcc libelf-dev make \
     texinfo libncurses5-dev patch python3 subversion wget zlib1g-dev \
     libtool libtool-bin python3-dev bzip2 libgmp3-dev g++ libssl-dev clang \
     python-is-python3 python-dev-is-python3 cmake tar \
     ninja-build apt-transport-https clangd
 
-RUN ln -s /proc/self/mounts /etc/mtab
-RUN mkdir -p /usr/local/share/keyring/
-RUN wget -O /usr/local/share/keyring/devkitpro-pub.gpg https://apt.devkitpro.org/devkitpro-pub.gpg
-RUN echo "deb [signed-by=/usr/local/share/keyring/devkitpro-pub.gpg] https://apt.devkitpro.org stable main" > /etc/apt/sources.list.d/devkitpro.list
+### Install gbdk
 
-RUN apt-get update -y
-RUN apt-get install -y devkitpro-pacman
+WORKDIR /opt/
+RUN wget https://github.com/gbdk-2020/gbdk-2020/releases/download/4.3.0/gbdk-linux64.tar.gz
+RUN tar -xvf gbdk-linux64.tar.gz -C /opt/
+RUN rm /opt/gbdk-linux64.tar.gz
 
-RUN dkp-pacman -Sy
-RUN dkp-pacman -S gba-dev --noconfirm
-#RUN source /etc/profile.d/devkit-env.sh
+ENV PATH="$PATH:/opt/gbdk/bin/"
+ENV GBDK_HOME="/opt/gbdk/"
+
+# ENV key=value
+
+### Bootstrap code server
 
 RUN curl -sL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh
 RUN bash /tmp/nodesource_setup.sh
@@ -39,9 +46,10 @@ WORKDIR /app/
 RUN mkdir -p /app/.vscode
 COPY gba-files/launch.json /app/.vscode/launch.json
 
-COPY gba-files/settings.json /app/.vscode/settings.json
-COPY gba-files/tasks.json /app/.vscode/tasks.json
-COPY gba-files/compile_flags.txt /app/compile_flags.txt
+COPY gbdk-files/settings.json /app/.vscode/settings.json
+COPY gbdk-files/tasks.json /app/.vscode/tasks.json
+COPY gbdk-files/compile_flags.txt /app/compile_flags.txt
+
 COPY common/ultimate-homebrew-extensions-0.0.4.vsix /root/.config/code-server/ultimate-homebrew-extensions-0.0.4.vsix
 RUN cd /root/.config/code-server/ && code-server --install-extension ultimate-homebrew-extensions-0.0.4.vsix --force
 
