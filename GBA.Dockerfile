@@ -46,7 +46,7 @@ COPY gba-files/settings.json /app/.vscode/settings.json
 COPY gba-files/tasks.json /app/.vscode/tasks.json
 COPY gba-files/compile_flags.txt /app/compile_flags.txt
 
-RUN cd /root/.config/code-server/ && code-server --install-extension ultimate-homebrew-extensions-0.0.2.vsix --force
+RUN cd /root/.config/code-server/ && code-server --install-extension ultimate-homebrew-extensions-0.0.3.vsix --force
 
 WORKDIR /app/
 
