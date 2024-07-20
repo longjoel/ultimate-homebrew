@@ -50,8 +50,8 @@ COPY gbdk-files/settings.json /app/.vscode/settings.json
 COPY gbdk-files/tasks.json /app/.vscode/tasks.json
 COPY gbdk-files/compile_flags.txt /app/compile_flags.txt
 
-COPY common/ultimate-homebrew-extensions-0.0.11.vsix /root/.config/code-server/ultimate-homebrew-extensions-0.0.11.vsix
-RUN cd /root/.config/code-server/ && code-server --install-extension ultimate-homebrew-extensions-0.0.11.vsix --force
+COPY common/ultimate-homebrew-extensions-0.0.13.vsix /root/.config/code-server/ultimate-homebrew-extensions-0.0.13.vsix
+RUN cd /root/.config/code-server/ && code-server --install-extension ultimate-homebrew-extensions-0.0.13.vsix --force
 
 WORKDIR /app/
 
