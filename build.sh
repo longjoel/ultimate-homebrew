@@ -4,3 +4,4 @@ docker build -t longjoelhome/ultimate-homebrew-ps2 -f PS2.Dockerfile . && docker
 docker build -t longjoelhome/ultimate-homebrew-ps3 -f PS3.Dockerfile . && docker push longjoelhome/ultimate-homebrew-ps3
 docker build -t longjoelhome/ultimate-homebrew-psp -f PSP.Dockerfile . && docker push longjoelhome/ultimate-homebrew-psp
 docker build -t longjoelhome/ultimate-homebrew-gbdk -f GBDK.Dockerfile . && docker push longjoelhome/ultimate-homebrew-gbdk
+docker build -t longjoelhome/ultimate-homebrew-msdos -f MSDOS.Dockerfile . && docker push longjoelhome/ultimate-homebrew-msdos
