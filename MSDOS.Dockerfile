@@ -1,5 +1,10 @@
 FROM ubuntu:22.04
 
+
+VOLUME [ "/app/src" ]
+EXPOSE 8080
+
+
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     python3 \
     python3-pip \
@@ -8,7 +13,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     build-essential \
     curl \
     bison flex curl gcc g++ make texinfo zlib1g-dev tar bzip2 gzip xz-utils \
-    unzip m4 dos2unix nasm
+    unzip m4 dos2unix nasm clangd
 
 WORKDIR /tmp/
 
@@ -29,13 +34,17 @@ RUN mkdir -p /root/.config/code-server/
 RUN bash -c 'echo bind-addr: 0.0.0.0:8080' > /root/.config/code-server/config.yaml
 RUN bash -c 'echo auth: none' >> /root/.config/code-server/config.yaml
 
+WORKDIR /template
+COPY msdos-files/template.mak /template/template.mak
+COPY msdos-files/cwsdpmi.zip /template/cwsdpmi.zip
+RUN unzip cwsdpmi.zip
 
-WORKDIR /app/
+COPY msdos-files/tasks.json /app/.vscode/tasks.json
+COPY msdos-files/compile_flags.txt /app/compile_flags.txt
 
 RUN mkdir -p /app/.vscode
 
 COPY msdos-files/compile_flags.txt /app/compile_flags.txt
-# WORKDIR /app/
 
 RUN code-server --install-extension cnshenj.vscode-task-manager
 RUN code-server --install-extension llvm-vs-code-extensions.vscode-clangd
